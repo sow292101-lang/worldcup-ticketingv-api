@@ -1,11 +1,26 @@
 import { Context } from "hono"
 import { matchs } from "../mock/matchs"
+import { MatchStage } from "domain/enum/MatchStage"
 
 export class GetMatchsHandler {
   async handle(c: Context) {
     const teamCode = c.req.query("team[code]")
-
+    const stage = c.req.query("stage")
     let result = [...matchs]
+    if(stage){
+      if(Object.values(MatchStage).includes(stage as MatchStage)){
+        return c.json({
+          success: false,
+          error: 'Invalid stage: "${stage}"`'
+        }, 400)
+      }
+      result = result.filter(m=>m.stage === stage)
+      return c.json({
+        success: true,
+        message: 'Matchs filtered by stage: ${stage}',
+        data: result
+      }, 200)
+    }
 
     if (teamCode) {
       if (!/^[A-Z]{3}$/.test(teamCode.toUpperCase())) {
