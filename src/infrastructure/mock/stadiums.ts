@@ -1,5 +1,5 @@
-import { Stadium } from "../domain/entities/Stadium";
-import { City } from "../domain/entities/City";
+import { Stadium } from "../../domain/entities/Stadium";
+import { City } from "../../domain/entities/City";
 import { cities } from "./cities";
 export const stadiums = [
     new Stadium(1, "Mercedes-Benz Stadium", 67382, cities[0]),

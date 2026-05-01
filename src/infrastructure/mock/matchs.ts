@@ -1,9 +1,9 @@
-import { Match } from "../domain/entities/Match"
+import { Match } from "../../domain/entities/Match"
 import { teams } from "./teams"
-import { Stadium } from "../domain/entities/Stadium"
+import { Stadium } from "../../domain/entities/Stadium"
 import { stadiums } from "./stadiums"
-import { MatchStage } from "../domain/enum/MatchStage"
-import { MatchStatus } from "../domain/enum/MatchStatus"
+import { MatchStage } from "../../domain/enum/MatchStage"
+import { MatchStatus } from "../../domain/enum/MatchStatus"
 
 
 

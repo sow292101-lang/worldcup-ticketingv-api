@@ -1,4 +1,4 @@
-import { Country } from "../domain/entities/Country";
+import { Country } from "../../domain/entities/Country";
 export const countries = [
     new Country(1, "USA", "us"),
     new Country(1, "Mexico", "me"),

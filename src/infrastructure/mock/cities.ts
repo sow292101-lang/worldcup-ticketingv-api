@@ -1,4 +1,4 @@
-import { City } from "../domain/entities/City";
+import { City } from "../../domain/entities/City";
 import { countries } from "./contries";
 export const cities = [
     new City(1, "Atlanta", countries[0]),

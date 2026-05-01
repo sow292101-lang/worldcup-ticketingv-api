@@ -1,4 +1,4 @@
-import { Team } from "../domain/entities/Team"
+import { Team } from "../../domain/entities/Team"
 import { countries } from "./contries"
 
 export const teams = [
