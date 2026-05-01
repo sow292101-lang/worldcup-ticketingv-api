@@ -11,12 +11,13 @@ import { MatchStatus } from "../../domain/enum/MatchStatus"
 
 export const matchs = [
 
+   
     new Match(
-        1,
-        2,
         1,
         teams[0],
         teams[1],
+        2,
+        1,
         stadiums[0],
         MatchStage.GROUP,
         MatchStatus.SCHEDULED,
@@ -26,13 +27,12 @@ export const matchs = [
         null,
         null
     ),
-
     new Match(
         2,
-        0,
-        0,
         teams[2],
         teams[3],
+        0,
+        0,
         stadiums[1],
         MatchStage.GROUP,
         MatchStatus.SCHEDULED,
@@ -42,13 +42,12 @@ export const matchs = [
         null,
         null
     ),
-
     new Match(
         3,
-        3,
-        2,
         teams[4],
         teams[5],
+        3,
+        2,
         stadiums[2],
         MatchStage.GROUP,
         MatchStatus.FINISHED,
@@ -58,5 +57,4 @@ export const matchs = [
         null,
         null
     )
-
 ]
