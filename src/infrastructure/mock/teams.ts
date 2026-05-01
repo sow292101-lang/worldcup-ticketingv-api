@@ -1,6 +1,7 @@
 import { Team } from "../../domain/entities/Team"
 import { countries } from "./contries"
 
+
 export const teams = [
     new Team(1, "France", countries[0], "FRA"),
     new Team(2, "Brazil", countries[0], "BRA"),
