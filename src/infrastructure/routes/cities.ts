@@ -1,5 +1,5 @@
 import { Hono } from "hono"
-import { GetCitiesHandler } from "infrastructure/handlers/home/GetCitiesHandler"
+import { GetCitiesHandler } from "infrastructure/handlers/GetCitiesHandler"
 
 export const citiesRouter = new Hono()
 

@@ -1,11 +1,11 @@
 import { Context } from "hono"
-import { countries } from "infrastructure/mock/contries"
+import { cities } from "../mock/cities"
 
-export class GetCountriesHandler {
+export class GetCitiesHandler {
   async handle(c: Context) {
     const name = c.req.query("name")
 
-    let result = [...countries]
+    let result = [...cities]
 
     if (name) {
       result = result.filter(c => 
@@ -13,14 +13,15 @@ export class GetCountriesHandler {
       )
       return c.json({
         success: true,
-        message: `Countries filtered by name: ${name}`,
+        message: `Cities filtered by name: ${name}`,
         data: result
       }, 200)
     }
     return c.json({
       success: true,
-      message:"All countries",
-      data: countries
+      message: "All cities",
+      data: cities
+      
     }, 200)
   }
 }
