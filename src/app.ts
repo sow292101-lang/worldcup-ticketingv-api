@@ -3,7 +3,10 @@ import { Hono } from 'hono'
 export const app = new Hono()
 
 app.get('/', (c) => {
-  return c.text('Hello Hono!')
+  return c.json({
+    success: true,
+    message: "World Cup Ticketing API"
+  })
 })
 
 
