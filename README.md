@@ -1,3 +1,6 @@
+- Mohamed Sow 
+
+
 To install dependencies:
 ```sh
 bun install
