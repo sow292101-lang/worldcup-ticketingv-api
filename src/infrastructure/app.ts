@@ -7,6 +7,7 @@ import { TeamsRouter } from './routes/teams'
 import { citiesRouter } from "./routes/cities"
 import { countriesRouter } from "./routes/countries"
 import { stadiumsRouter } from "./routes/stadiums"
+import { ticketsRouter } from './routes/tickets'
 export const app = new Hono()
 
 app.onError((err, c) => {
@@ -27,3 +28,4 @@ app.route("/teams", TeamsRouter)
 app.route("/cities", citiesRouter)
 app.route("/countries", countriesRouter)
 app.route("/stadiums", stadiumsRouter)
+app.route("/tickets", ticketsRouter)
