@@ -1,6 +1,6 @@
  import { Context } from "hono";
  import { teams } from "infrastructure/mock/teams";
-
+ import { HTTPException } from "hono/http-exception"
 
  export class GetTeamByFifaCodeHandler {
    async  handle(c: Context) {
@@ -12,12 +12,9 @@
     }, 400)
   }
           const team = teams.find(t => t.code.value === fifaCode);
-              if (!team) {
-                return c.json({
-                  success: false,
-                  error: "Team " + fifaCode + " does not exist"
-                }, 404);
-              }
+                 if (!team) {
+      throw new HTTPException(404, { message: "Team " + fifaCode + " does not exist" })
+    }
 
               return c.json({
                 success: true,

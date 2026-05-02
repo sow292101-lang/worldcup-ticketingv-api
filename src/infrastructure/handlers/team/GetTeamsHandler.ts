@@ -1,15 +1,13 @@
 import { Context } from "hono"
 import { teams } from "infrastructure/mock/teams"
+import { HTTPException } from "hono/http-exception"
 
 export class GetTeamsHandler {
   async handle(c: Context) {
   const sort = c.req.query("sort")
-
+  const name = c.req.query("name")
     if (sort && sort !== "name" && sort !== "-name") {
-      return c.json({
-        success: false,
-        error: "Invalid sort value"
-      }, 400)
+     throw new HTTPException(400, { message: `Invalid sort value: "${sort}"` })
     }
 
     let result = [...teams]

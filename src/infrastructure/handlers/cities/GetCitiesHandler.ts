@@ -1,5 +1,5 @@
 import { Context } from "hono"
-import { cities } from "../mock/cities"
+import { cities } from "../../mock/cities"
 
 export class GetCitiesHandler {
   async handle(c: Context) {
