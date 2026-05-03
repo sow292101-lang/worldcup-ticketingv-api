@@ -1,27 +1,29 @@
-import { Context } from "hono";
-import { HTTPException } from "hono/http-exception";
-import { AppDataSource } from "infrastructure/database/AppDataSource";
-import { Stadium } from "domain/entities/Stadium";
-import { ILike } from "typeorm";
+import { Context } from "hono"
+import { HTTPException } from "hono/http-exception"
+import { AppDataSource } from "../../database/AppDataSource"
+import { Stadium } from "../../../domain/entities/Stadium"
+import { StadiumService } from "../../../application/services/StadiumService"
+import { NotFoundError } from "../../../domain/errors/NotFoundError"
 
 export class GetStadiumByNameHandler {
   async handle(c: Context) {
-    const name = String(c.req.param("name"));
+    const name = String(c.req.param("name"))
+    const stadiumRepository = AppDataSource.getRepository(Stadium)
+    const stadiumService = new StadiumService(stadiumRepository)
 
-    const stadiumRepository = AppDataSource.getRepository(Stadium);
-    const stadium = await stadiumRepository.findOne({
-      where: { name: ILike(name) },
-      relations: ["city", "city.country"]
-    });
+    try {
+      const stadium = await stadiumService.findByName(name)
+      return c.json({
+        success: true,
+        message: `Stadium ${stadium.name}`,
+        data: stadium
+      }, 200)
 
-    if (!stadium) {
-      throw new HTTPException(404, { message: `Stadium "${name}" does not exist` });
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new HTTPException(404, { message: e.message })
+      }
+      throw e
     }
-
-    return c.json({
-      success: true,
-      message: `Stadium ${stadium.name}`,
-      data: stadium
-    }, 200);
   }
 }

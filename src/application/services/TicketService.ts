@@ -25,7 +25,7 @@ export class TicketService {
         const existingTicket = tickets.find(t => t.match.id === matchId && t.seat === seat)
 
         if (existingTicket) {
-            throw new ConflictError(`Seat "${seat}" is already taken for match ${matchId}`)
+            throw new ConflictError(`Seat '${seat}' is already taken for match ${matchId}`)
         }
 
         const ticket = this.ticketRepository.create({

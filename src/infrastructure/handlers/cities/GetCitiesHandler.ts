@@ -1,33 +1,38 @@
 import { Context } from "hono"
-import { AppDataSource } from "infrastructure/database/AppDataSource"
-import { City } from "domain/entities/City"
-import { ILike } from "typeorm"
+import { HTTPException } from "hono/http-exception"
+import { AppDataSource } from "../../database/AppDataSource"
+import { City } from "../../../domain/entities/City"
+import { CityService } from "../../../application/services/CityService"
+import { NotFoundError } from "../../../domain/errors/NotFoundError"
 
 export class GetCitiesHandler {
   async handle(c: Context) {
     const name = c.req.query("name")
-
     const cityRepository = AppDataSource.getRepository(City)
+    const cityService = new CityService(cityRepository)
 
-    if (name) {
-      const result = await cityRepository.find({
-        where: { name: ILike(`%${name}%`) },
-        relations: ["country"]
-      })
+    try {
+      if (name) {
+        const city = await cityService.findByName(name)
+        return c.json({
+          success: true,
+          message: `Cities filtered by name: ${name}`,
+          data: [city]
+        }, 200)
+      }
+
+      const cities = await cityService.findAll()
       return c.json({
         success: true,
-        message: `Cities filtered by name: ${name}`,
-        data: result
+        message: "All cities",
+        data: cities
       }, 200)
-    }
 
-    const result = await cityRepository.find({
-      relations: ["country"]
-    })
-    return c.json({
-      success: true,
-      message: "All cities",
-      data: result
-    }, 200)
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new HTTPException(404, { message: e.message })
+      }
+      throw e
+    }
   }
 }
