@@ -1,11 +1,16 @@
 import { Match } from "./Match"
 import { Customer } from "./Customer"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 
-
+@Entity()
 export class Ticket {
+    @PrimaryGeneratedColumn()
     id: number
+    @ManyToOne(() => Match)
     match: Match
+    @Column()
     seat: string
+    @Column(() => Customer) 
     customer: Customer
 
     constructor(id: number, match: Match, seat: string, customer : Customer) {

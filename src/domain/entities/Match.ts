@@ -1,21 +1,36 @@
 import { Stadium } from "./Stadium";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 import { Team } from "./Team";
 import { MatchStage } from "../enum/MatchStage"
 import { MatchStatus } from "../enum/MatchStatus";
+@Entity()
 
 export class Match {
+    @PrimaryGeneratedColumn()
     id: number
+    @ManyToOne(() => Team)
     homeTeam: Team
+    @ManyToOne(() => Team)
     awayTeam: Team
+    @Column({ default: 0 })
     homeScore: number
+    @Column({ default: 0 })
     awayScore: number
+    @Column({ nullable: true })
     homeScoreExtraTime: number | null
+    @Column({ nullable: true })
     awayScoreExtraTime: number | null
+    @Column({ nullable: true })
     homeScoreShootOut: number | null
+    @Column({ nullable: true })
     awayScoreShootOut: number | null
+    @ManyToOne(() => Stadium)
     stadium: Stadium
+    @Column()
     stage: MatchStage
+    @Column()
     status: MatchStatus
+     @Column()
     date: Date
 
     constructor(
