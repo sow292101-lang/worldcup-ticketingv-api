@@ -10,16 +10,19 @@ export class Team {
     @ManyToOne(() => Country)
     country:Country
     
-    @Column({
-        transformer: {
-            to: (value: { value: string }) => value.value,
-            from: (value: string) => ({ value })
-        } })
-    code: {value: string}
+  @Column({
+    type: "varchar",
+    transformer: {
+        to: (value: { value: string }) => value.value,
+        from: (value: string) => ({ value })
+    }
+})
+code: { value: string }
 
     constructor(id:number, name:string, country:Country, code:string){
-         if (!/^[A-Z]{3}$/.test(code)) {
-      throw new Error("Le code FIFA doit contenir 3 lettres majuscules")
+    
+     if (code && !/^[A-Z]{3}$/.test(code)) {
+        throw new Error("Le code FIFA doit contenir 3 lettres majuscules")
     }
         this.id = id
         this.name = name

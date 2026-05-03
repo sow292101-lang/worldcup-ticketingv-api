@@ -26,10 +26,11 @@ export class Match {
     awayScoreShootOut: number | null
     @ManyToOne(() => Stadium)
     stadium: Stadium
-    @Column()
-    stage: MatchStage
-    @Column()
-    status: MatchStatus
+   @Column({ type: "varchar" })
+status: MatchStatus
+
+@Column({ type: "varchar" })
+stage: MatchStage
      @Column()
     date: Date
 
@@ -48,15 +49,9 @@ export class Match {
         homeScoreShootOut: number | null,
         awayScoreShootOut: number | null
     ) {
-        if (id <= 0) {
-            throw new Error("l'id doit être supérieur à 0")
-        }
-        if (homeTeam.name === awayTeam.name) {
-            throw new Error("les deux équipes doivent être différentes")
-        }
-        if (homeScore < 0 || awayScore < 0) {
-            throw new Error("le score doit être positif ou 0")
-        }
+      if (id && id <= 0) throw new Error("l'id doit être supérieur à 0")
+    if (homeTeam && awayTeam && homeTeam.name === awayTeam.name) throw new Error("les deux équipes doivent être différentes")
+    if (homeScore !== undefined && awayScore !== undefined && (homeScore < 0 || awayScore < 0)) throw new Error("le score doit être positif ou 0")
 
         this.id = id
         this.homeTeam = homeTeam
