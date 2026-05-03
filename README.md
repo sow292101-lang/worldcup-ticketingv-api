@@ -1,5 +1,5 @@
 - Mohamed Sow 
-
+- AMAGLI Kanko Maureen
 
 To install dependencies:
 ```sh
