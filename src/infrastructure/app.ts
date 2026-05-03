@@ -8,6 +8,7 @@ import { citiesRouter } from "./routes/cities"
 import { countriesRouter } from "./routes/countries"
 import { stadiumsRouter } from "./routes/stadiums"
 import { ticketsRouter } from './routes/tickets'
+import { Match } from '@domain/entities/Match'
 export const app = new Hono()
 
 app.onError((err, c) => {

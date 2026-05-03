@@ -2,9 +2,9 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@domain/*":["src/domain/*"],
-      "@infrastructure/*" : ["src/infrastructure"],
-      "@application/*": ["src/application"]
+      "@domain/*":["domain/*"],
+      "@infrastructure/*" : ["infrastructure/*"],
+      "@application/*": ["application/*"]
             },
     "strict": true,
     "jsx": "react-jsx",
