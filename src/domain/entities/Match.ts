@@ -33,6 +33,8 @@ status: MatchStatus
 stage: MatchStage
      @Column()
     date: Date
+    @Column({ default: 0 })
+    price: number
 
     constructor(
         id: number,
@@ -44,6 +46,7 @@ stage: MatchStage
         stage: MatchStage,
         status: MatchStatus,
         date: Date,
+        price: number,
         homeScoreExtraTime: number | null,
         awayScoreExtraTime: number | null,
         homeScoreShootOut: number | null,
@@ -62,6 +65,7 @@ stage: MatchStage
         this.stage = stage
         this.status = status
         this.date = date
+        this.price = price 
         this.homeScoreExtraTime = homeScoreExtraTime
         this.awayScoreExtraTime = awayScoreExtraTime
         this.homeScoreShootOut = homeScoreShootOut
