@@ -1,5 +1,7 @@
 import { Context } from "hono";
-import { matchs } from "infrastructure/mock/matchs";
+import { AppDataSource } from "infrastructure/database/AppDataSource";
+import { Match } from "domain/entities/Match"; 
+import { MatchStatus } from "domain/enum/MatchStatus";
 
 const VALID_STATUS = [
   "scheduled",
@@ -12,7 +14,6 @@ export class GetMatchsByStatusHandler {
   async handle(c: Context) {
     const status = String(c.req.param("status"));
 
-   
     if (!VALID_STATUS.includes(status)) {
       return c.json({
         success: false,
@@ -20,10 +21,11 @@ export class GetMatchsByStatusHandler {
       }, 400);
     }
 
-    
-    const filteredMatchs = matchs.filter(
-      (match) => match.status === status
-    );
+    const matchRepository = AppDataSource.getRepository(Match); 
+    const filteredMatchs = await matchRepository.find({ 
+      where: { status: status as MatchStatus },
+      relations: ["homeTeam", "awayTeam", "stadium", "stadium.city", "stadium.city.country"] 
+    });
 
     return c.json({
       success: true,

@@ -10,10 +10,16 @@ export class Ticket {
     match: Match
     @Column()
     seat: string
-    @Column(() => Customer) 
-    customer: Customer
+    @Column()
+    firstname !: string
 
-    constructor(id: number, match: Match, seat: string, customer : Customer) {
+    @Column()
+    lastname !: string
+
+    @Column()
+    email !: string
+
+    constructor(id: number, match: Match, seat: string,  firstname: string, lastname: string, email: string) {
        if (id && id <= 0) {
         throw new Error("L'id doit être supérieur à 0")
     }
@@ -24,6 +30,8 @@ export class Ticket {
         this.id = id
         this.match = match
         this.seat = seat
-        this.customer = customer
+         this.firstname = firstname
+        this.lastname = lastname
+        this.email = email
     }
 }

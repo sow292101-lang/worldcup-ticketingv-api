@@ -1,5 +1,7 @@
 import { Context } from "hono";
-import { matchs } from "infrastructure/mock/matchs";
+import { AppDataSource } from "infrastructure/database/AppDataSource"; 
+import { Match } from "domain/entities/Match";
+import { MatchStage } from "domain/enum/MatchStage";
 
 const VALID_STAGES = [
   "group",
@@ -15,7 +17,6 @@ export class GetMatchsByStageHandler {
   async handle(c: Context) {
     const stage = String(c.req.param("stage"));
 
-   
     if (!VALID_STAGES.includes(stage)) {
       return c.json({
         success: false,
@@ -23,10 +24,11 @@ export class GetMatchsByStageHandler {
       }, 400);
     }
 
-   
-    const filteredMatchs = matchs.filter(
-      (match) => match.stage === stage
-    );
+    const matchRepository = AppDataSource.getRepository(Match);
+    const filteredMatchs = await matchRepository.find({ 
+      where: { stage: stage as MatchStage },
+      relations: ["homeTeam", "awayTeam", "stadium", "stadium.city", "stadium.city.country"] 
+    });
 
     return c.json({
       success: true,

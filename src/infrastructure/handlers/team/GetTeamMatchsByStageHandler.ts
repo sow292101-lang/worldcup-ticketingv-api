@@ -1,7 +1,9 @@
 import { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { matchs } from "infrastructure/mock/matchs";
-import { teams } from "infrastructure/mock/teams";
+import { AppDataSource } from "infrastructure/database/AppDataSource";
+import { Match } from "domain/entities/Match";
+import { Team } from "domain/entities/Team";
+import { MatchStage } from "domain/enum/MatchStage";
 
 const VALID_STAGES = [
   "group",
@@ -18,7 +20,6 @@ export class GetTeamMatchsByStageHandler {
     const fifaCode = String(c.req.param("fifaCode")).toUpperCase();
     const stage = String(c.req.param("stage"));
 
-   
     if (!/^[A-Z]{3}$/.test(fifaCode)) {
       return c.json({
         success: false,
@@ -26,7 +27,6 @@ export class GetTeamMatchsByStageHandler {
       }, 400);
     }
 
-   
     if (!VALID_STAGES.includes(stage)) {
       return c.json({
         success: false,
@@ -34,19 +34,28 @@ export class GetTeamMatchsByStageHandler {
       }, 400);
     }
 
-  
-    const team = teams.find(t => t.code.value === fifaCode);
+    const teamRepository = AppDataSource.getRepository(Team);
+    const team = await teamRepository
+      .createQueryBuilder("team")
+      .where("team.code = :code", { code: fifaCode })
+      .getOne();
+
     if (!team) {
       throw new HTTPException(404, { message: "Team " + fifaCode + " does not exist" });
     }
 
-  
-    const filteredMatchs = matchs.filter(
-      (match) =>
-        (match.homeTeam.code.value === fifaCode ||
-        match.awayTeam.code.value === fifaCode) &&
-        match.stage === stage
-    );
+    const matchRepository = AppDataSource.getRepository(Match);
+    const filteredMatchs = await matchRepository
+      .createQueryBuilder("match")
+      .leftJoinAndSelect("match.homeTeam", "homeTeam")
+      .leftJoinAndSelect("match.awayTeam", "awayTeam")
+      .leftJoinAndSelect("match.stadium", "stadium")
+      .leftJoinAndSelect("stadium.city", "city")
+      .leftJoinAndSelect("city.country", "country")
+      .where("homeTeam.code = :code", { code: fifaCode })
+      .orWhere("awayTeam.code = :code", { code: fifaCode })
+      .andWhere("match.stage = :stage", { stage })
+      .getMany();
 
     return c.json({
       success: true,
